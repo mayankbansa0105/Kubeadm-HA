@@ -179,12 +179,14 @@ vi /etc/nginx/tcp.conf.d/apiserver.conf
 ```
 stream {
         upstream apiserver_read {
-             server 192.168.30.5:6443;                     #--> control plane node 1 ip and kube-api port
-             server 192.168.30.6:6443;                     #--> control plane node 2 ip and kube-api port
+             server 10.182.0.3:6443;                #--> control plane node 1 ip and kube-api port
+             server 10.182.0.4:6443;                     #--> control plane node 2 ip and kube-api port
         }
         server {
                 listen 6443;                               # --> port on which load balancer will listen
                 proxy_pass apiserver_read;
+                proxy_timeout 3s;
+                proxy_connect_timeout 1s;
         }
 }
 ```
